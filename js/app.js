@@ -36,20 +36,21 @@ function powerrand(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-
+function create(){
 
 //creation of player
-let player = new user(20, 5, 0.7);
+window.player = new user(20, 5, 0.7);
 
 //creation of ships
-let ship1 = new ship(1, randval(3, 6), randval(2, 4), powerrand(0.6, 0.8));
-let ship2 = new ship(2, randval(3, 6), randval(2, 4), powerrand(0.6, 0.8));
-let ship3 = new ship(3, randval(3, 6), randval(2, 4), powerrand(0.6, 0.8));
-let ship4 = new ship(4, randval(3, 6), randval(2, 4), powerrand(0.6, 0.8));
-let ship5 = new ship(1, randval(3, 6), randval(2, 4), powerrand(0.6, 0.8));
-let ship6 = new ship(1, randval(3, 6), randval(2, 4), powerrand(0.6, 0.8));
+window.ship1 = new ship(1, randval(3, 6), randval(2, 4), powerrand(0.6, 0.8));
+window.ship2 = new ship(2, randval(3, 6), randval(2, 4), powerrand(0.6, 0.8));
+window.ship3 = new ship(3, randval(3, 6), randval(2, 4), powerrand(0.6, 0.8));
+window.ship4 = new ship(4, randval(3, 6), randval(2, 4), powerrand(0.6, 0.8));
+window.ship5 = new ship(1, randval(3, 6), randval(2, 4), powerrand(0.6, 0.8));
+window.ship6 = new ship(1, randval(3, 6), randval(2, 4), powerrand(0.6, 0.8));
 
-
+}
+create();
 //guide to user
 console.log("Earth has been attacked by a horde of aliens! You are the captain of the USS Schwarzenegger, on a mission to destroy every last alien ship. Battle the aliens as you try to destroy them with your lasers.");
 
@@ -86,7 +87,7 @@ function attack() {
     }
 
     //attack process
-    if (currentaccuracy < currentship.accuracy) {
+    if (currentaccuracy > currentship.accuracy) {
 
         currentship.hull = currentship.hull - player.firepower;
         console.log('you have attacked the ship');
@@ -142,21 +143,39 @@ function attack() {
         }
         if (ship6.hull < 1) {
             ship6 = 'destroyed';
-            console.log('congrats! you have won the game!!');
+			console.log('You have won the game');
+			var restart = confirm('Congrats! you have won he game!! Do you wish to restart the game?');
+            if (restart == true){
+				//creation of player
+create();
+				start();
+			}
+			
             end = true;
+			
         }
 
     } else {
-        console.log('The ship attacked you');
+        console.log('The skip attacked you');
         player.hull = player.hull - ship1.firepower;
         if (player.hull < 1) {
-            console.log('Ooops! you have lost the game!');
+			console.log('You have lost the game');
+            var restart = confirm('You have been killed. You have lost the game. Do you wish to restart the game?');
+            if (restart == true){
+				//creation of player
+create();
+				start();
+			}
             end = true;
         }
     }
 
 }
 
+function start(){
+	
 while (end != true) {
     attack();
 }
+}
+setTimeout(start(),4000);
